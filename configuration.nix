@@ -5,10 +5,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ ./hardware-configuration.nix ];
 
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -16,6 +13,8 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  security.sudo.wheelNeedsPassword = false;
 
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -40,9 +39,6 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-
-  
-
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
@@ -61,10 +57,13 @@
   users.users.nixos = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAG0Q9SO1UHD1lFrUwaZW3S74jHwLuu26WKgUcJqNHNG sebastian@zawadzki.tech"
+    ];
+    #   packages = with pkgs; [
+    #     firefox
+    #     tree
+    #   ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -75,6 +74,39 @@
     neofetch
     open-vm-tools
     wget
+    gum
+    (writeShellScriptBin "nix_installer" ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      # if [ "$(id -u)" -eq 0 ]; then
+      # 	echo "ERROR! $(basename "$0") should be run as a regular user"
+      # 	exit 1
+      # fi
+
+      if [ ! -d "/vmwarefs" ]; then
+        mkdir -p /vmwarefs
+        vmhgfs-fuse /vmwarefs
+      fi
+
+      if [ ! -e "/vmwarefs/laboratorium/disks.nix" ]; then
+      	echo "ERROR! $(basename "$0") could not find the required /vmwarefs/laboratorium/disks.nix"
+      	exit 1
+      fi
+
+      gum confirm  --default=false \
+      "🔥 🔥 🔥 WARNING!!!! This will ERASE ALL DATA on the disk. Are you sure you want to continue?"
+
+      echo "Partitioning Disks"
+      nix run github:nix-community/disko \
+      --extra-experimental-features "nix-command flakes" \
+      --no-write-lock-file \
+      -- \
+      --mode zap_create_mount \
+      "/vmwarefs/laboratorium/disks.nix"
+
+      nixos-install --flake "/vmwarefs/laboratorium/.#nixos"
+    '')
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -120,4 +152,3 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
 }
-
