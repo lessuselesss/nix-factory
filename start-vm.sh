@@ -32,8 +32,7 @@ main() {
     osascript -- - "$ISOPATH" "$MACHINE" "$NAME" <<END
         on run argv
            tell application "UTM"
-               set disk to (item 1 of argv & "/" & item 2 of argv & ".img")
-               set vm to make new virtual machine with properties { backend:qemu, configuration: { name:item 3 of argv, architecture:"aarch64", drives: {{removable:false, source:disk}}}}
+               set vm to make new virtual machine with properties { backend:qemu, configuration: { name:item 3 of argv, architecture:"aarch64", drives: {{removable:false, source:(item 1 of argv & "/" & item 2 of argv & ".qcow2")}}}}
            end tell
        end run
 END

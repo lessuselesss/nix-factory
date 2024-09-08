@@ -19,11 +19,12 @@ fi
 cd "$(dirname "$0")"
 
 main() {
-    nix build .#nixosConfigurations."$1".config.formats.raw-efi
+    nix build .#nixosConfigurations."$1".config.formats.qcow-efi
 
-    rm -fv results/"$1".img
-    cp -v result results/"$1".img
-    chmod 644 results/"$1".img
+    mkdir -p results
+    rm -fv results/"$1".qcow2
+    cp -v result/"$1".qcow2 results/
+    chmod 644 results/"$1".qcow2
 }
 
 main "$@"
