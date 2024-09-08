@@ -23,7 +23,7 @@ main() {
 
     mkdir -p results
     rm -fv results/"$1".qcow2
-    cp -v result/"$1".qcow2 results/
+    cp -v result/nixos.qcow2 results/"$1".qcow2
     chmod 644 results/"$1".qcow2
 }
 

@@ -43,8 +43,8 @@ END
     # Sometimes, UTM does something truly magical, and actually DOESN'T import the drive...
     # so we copy it on our own...
     if [[ ! -f ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/"$NAME".qcow2 ]]; then
-        cp result/"$NAME".qcow2 ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/"$NAME".qcow2
-        chmod 644 ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/"$NAME".qcow2
+        cp results/"$MACHINE".qcow2 ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/"$MACHINE".qcow2
+        chmod 644 ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/"$MACHINE".qcow2
     fi
 
     utmctl start "$NAME"
