@@ -1,0 +1,10 @@
+* Nix Factory
+This project is my playground for building all kinds of Nixos Virtual Machines. Build process utilizes nixos-generators to (currently) build QEMU compatible images, for UTM to run.
+
+** Usage
+- build-iso.sh :: Create bootable iso using basic configuration
+- build-vm.sh :: Create Nixos VM image, ready to be cloned and ran by QEMU (UTM)
+- start-vm.sh :: With magic of AppleScript, make UTM create VM via CLI based on our prebuilt image, and return it's IP address
+
+** Types of machines
+- nixos :: Standard basic nixos image, with bare minimum configuration
