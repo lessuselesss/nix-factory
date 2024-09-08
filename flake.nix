@@ -19,7 +19,8 @@
       modules = [ ./configuration.nix self.nixosModules.vm ];
       specialArgs = {
         inherit inputs;
-        diskSize = "8192";
+        hostName = "nixos";
+        diskSize = "16384";
       };
     };
   };
