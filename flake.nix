@@ -15,11 +15,11 @@
       nixpkgs.hostPlatform = "aarch64-linux";
     };
 
-    nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       modules = [ ./configuration.nix self.nixosModules.vm ];
       specialArgs = {
         inherit inputs;
-        diskSize = "20480";
+        diskSize = "8192";
       };
     };
   };
