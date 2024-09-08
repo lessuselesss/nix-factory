@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = { self, nixos-generators, disko, nixpkgs }@inputs: {
+  outputs = { self, nixos-generators, nixpkgs }@inputs: {
     nixosModules.vm = { config, ... }: {
       imports = [ nixos-generators.nixosModules.all-formats ];
       nixpkgs.hostPlatform = "aarch64-linux";
