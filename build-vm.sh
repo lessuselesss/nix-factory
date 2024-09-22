@@ -19,7 +19,7 @@ fi
 cd "$(dirname "$0")"
 
 main() {
-    nix build .#nixosConfigurations."$1".config.formats.qcow-efi
+    nix build .#nixosConfigurations."$1".config.formats.qcow
 
     mkdir -p results
     rm -fv results/"$1".qcow2
