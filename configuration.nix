@@ -13,11 +13,10 @@
   services.qemuGuest.enable = true;
 
   networking.hostName = specialArgs.hostName;
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 22 ];
+  };
 
   time.timeZone = "Europe/Warsaw";
 
