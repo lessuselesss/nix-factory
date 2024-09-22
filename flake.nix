@@ -23,5 +23,14 @@
         diskSize = "16384";
       };
     };
+
+    nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
+      modules = [ ./configuration.nix ./postgresql.nix self.nixosModules.vm ];
+      specialArgs = {
+        inherit inputs;
+        hostName = "postgres";
+        diskSize = "16384";
+      };
+    };
   };
 }
