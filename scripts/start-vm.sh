@@ -37,7 +37,7 @@ main() {
 END
 
     # For some bizarre reason efi_vars.fd file is 444... Which UTM doesn't like
-    chmod 755 ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/efi_vars.fd
+    chmod 644 ~/Library/Containers/com.utmapp.UTM/Data/Documents/"$NAME".utm/Data/efi_vars.fd
 
     # Sometimes, UTM does something truly magical, and actually DOESN'T import the drive...
     # so we copy it on our own...
