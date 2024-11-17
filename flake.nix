@@ -9,7 +9,7 @@
         };
 
         nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-          modules = [ ./configuration.nix self.nixosModules.vm ];
+          modules = [ ./configurations/base.nix self.nixosModules.vm ];
           specialArgs = {
             inherit inputs;
             hostName = "nixos";
@@ -19,7 +19,7 @@
 
         nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
           modules =
-            [ ./configuration.nix ./postgresql.nix self.nixosModules.vm ];
+            [ ./configurations/base.nix ./configurations/postgresql.nix self.nixosModules.vm ];
           specialArgs = {
             inherit inputs;
             hostName = "postgres";
