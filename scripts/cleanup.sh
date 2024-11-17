@@ -16,18 +16,17 @@ Clean up the system from images, delete UTM machines and collect nix garbage.
     exit
 fi
 
-cd "$(dirname "$0")"
+cd "$(git rev-parse --show-toplevel)"
 
 main() {
-    utmctl list | tail +2 | awk '{print $3}' | xargs -I{} utmctl stop {}
+    utmctl list | tail -n+2 | awk '{print $3}' | xargs -I{} utmctl stop {}
 
-    until ! utmctl list | tail +2 | grep -v stopped
-    do
+    until ! utmctl list | tail -n+2 | grep -v stopped; do
         echo "Waiting for all machines to be stopped"
         sleep 10
     done
 
-    utmctl list | tail +2 | awk '{print $3}' | xargs -I{} utmctl delete {}
+    utmctl list | tail -n+2 | awk '{print $3}' | xargs -I{} utmctl delete {}
 
     rm -rf ./results ./result
 

@@ -18,7 +18,7 @@ Optionally supply a name. If name is not supplied, then the machine name will be
     exit
 fi
 
-cd "$(dirname "$0")"
+cd "$(git rev-parse --show-toplevel)"
 
 main() {
     MACHINE=$1
@@ -27,7 +27,6 @@ main() {
     else
         NAME=$1
     fi
-
 
     osascript -- - "$ISOPATH" "$MACHINE" "$NAME" <<END
         on run argv
@@ -49,12 +48,10 @@ END
 
     utmctl start "$NAME"
 
-    until (utmctl ip-address "$NAME" 2>/dev/null | grep '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')
-    do
+    until (utmctl ip-address "$NAME" 2>/dev/null | grep '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'); do
         echo "Waiting for machine $NAME to start..."
         sleep 10
     done
 }
-
 
 main "$@"

@@ -16,7 +16,7 @@ Build iso based on MACHINE (see flake.nix)
     exit
 fi
 
-cd "$(dirname "$0")"
+cd "$(git rev-parse --show-toplevel)"
 
 main() {
     nix build .#nixosConfigurations."$1".config.formats.iso

@@ -16,13 +16,12 @@ Stop and delete machine.
     exit
 fi
 
-cd "$(dirname "$0")"
+cd "$(git rev-parse --show-toplevel)"
 
 main() {
     utmctl stop "$1"
 
-    until ! utmctl status "$1" | grep 'started'
-    do
+    until ! utmctl status "$1" | grep 'started'; do
         echo "Waiting for machine ${1} to be stopped."
         sleep 5
     done
