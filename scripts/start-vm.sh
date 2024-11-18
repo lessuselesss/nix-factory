@@ -8,11 +8,14 @@ if [[ "${TRACE-0}" == "1" ]]; then
 fi
 
 if [[ "${1-}" =~ ^-*h(elp)?$ ]] || [[ $# -eq 0 ]]; then
-    echo 'Usage: ./build-iso.sh MACHINE [NAME]
+    echo 'Usage: ./build-iso.sh MACHINE [NAME] [NON-POSITIONAL-ARGS...]
 
 Build raw-efi image based on MACHINE (see flake.nix)
 
 Optionally supply a name. If name is not supplied, then the machine name will be set to MACHINE.
+
+Non-positional arguments:
+-m | --memory :: set memory of virtual machine in mebibytes
 
 '
     exit
@@ -21,6 +24,30 @@ fi
 cd "$(git rev-parse --show-toplevel)"
 
 main() {
+    POSITIONAL_ARGS=()
+
+    MEMORY=1024
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+        -m | --memory)
+            MEMORY="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        -* | --*)
+            echo "Unknown option $1"
+            exit 1
+            ;;
+        *)
+            POSITIONAL_ARGS+=("$1") # save positional arg
+            shift                   # past argument
+            ;;
+        esac
+    done
+
+    set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
     MACHINE=$1
     if [[ $# -gt 1 ]]; then
         NAME=$2
@@ -28,10 +55,10 @@ main() {
         NAME=$1
     fi
 
-    osascript -- - "$ISOPATH" "$MACHINE" "$NAME" <<END
+    osascript -- - "$ISOPATH" "$MACHINE" "$NAME" "$MEMORY" <<END
         on run argv
            tell application "UTM"
-               set vm to make new virtual machine with properties { backend:qemu, configuration: { name:item 3 of argv, architecture:"aarch64", drives: {{removable:false, source:(item 1 of argv & "/" & item 2 of argv & ".qcow2")}}}}
+               set vm to make new virtual machine with properties { backend:qemu, configuration: { name:item 3 of argv, architecture:"aarch64", memory: item 4 of argv, drives: {{removable:false, source:(item 1 of argv & "/" & item 2 of argv & ".qcow2")}}}}
            end tell
        end run
 END
