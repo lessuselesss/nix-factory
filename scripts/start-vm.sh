@@ -15,7 +15,8 @@ Build raw-efi image based on MACHINE (see flake.nix)
 Optionally supply a name. If name is not supplied, then the machine name will be set to MACHINE.
 
 Non-positional arguments:
--m | --memory :: set memory of virtual machine in mebibytes
+-m | --memory      :: set memory of virtual machine in mebibytes
+-r | --reconfigure :: set temporary IP address based on static-ips.yaml file
 
 '
     exit
@@ -27,6 +28,7 @@ main() {
     POSITIONAL_ARGS=()
 
     MEMORY=1024
+    RECONFIGURE=""
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -35,7 +37,11 @@ main() {
             shift # past argument
             shift # past value
             ;;
-        -* | --*)
+        -r | --reconfigure)
+            RECONFIGURE="quick"
+            shift # past argument
+            ;;
+        -*)
             echo "Unknown option $1"
             exit 1
             ;;
@@ -75,10 +81,16 @@ END
 
     utmctl start "$NAME"
 
-    until (utmctl ip-address "$NAME" 2>/dev/null | grep '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'); do
+    until (utmctl ip-address "$NAME" 2>/dev/null | grep -q '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'); do
         echo "Waiting for machine $NAME to start..."
         sleep 10
     done
+
+    if [[ "$RECONFIGURE" = "quick" ]]; then
+        ./scripts/reconfigure-ip.sh "$NAME"
+    fi
+
+    utmctl ip-address "$NAME" 2>/dev/null | grep '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'
 }
 
 main "$@"
