@@ -1,0 +1,29 @@
+#+TITLE: Networking
+#+DESCRIPTION: Networking workarounds for this projects
+
+* Problem
+UTM is assigning IP addresses to machines when they start. There is no way to control this process externally, but it won't complain when IP address is changed from within Linux host. It will happily play along. With how nixos (and flakes) are constructed, there are three ways of assigning new IP addresses to the machines, each with their own drawbacks (of which it seems to be more than cons):
+
+** Baking IP addressing into the image
+- Pros:
+  + Survives reboots
+  + Almost effortless if single machine is needed
+- Cons:
+  + Each machine requires separate entry and each machine has to be built separately
+  + Disk space usage due to many images being built
+
+** Reconfiguring Linux host with 'ip' command
+- Pros:
+  + Very quick
+  + Requires one image only
+- Cons:
+  + Needs separate reference for which IP address is used, like CLI parameter, or file with static ip list
+  + Doesn't survive reboots
+
+** Reconfiguring Nixos host with 'nixos-rebuild' command
+- Pros:
+  + Requires only one image
+  + Survives reboots
+- Cons:
+  + Requires separate entry in flake.nix just for reconfiguration, since we need one output for building machine and one for reconfiguration
+  + Rebuilds are incredibly slow, as it effectively rebuilds an entire nixos system
