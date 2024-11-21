@@ -32,8 +32,8 @@ main() {
         exit 0
     fi
 
-    ssh nixos@"$CURRIP" -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" "sudo ip addr add $NEWIP/24 brd + dev enp0s1"
-    ssh nixos@"$NEWIP" -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" "sudo ip addr del $CURRIP/24 dev enp0s1"
+    ssh nixos@"$CURRIP" -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" "sudo ip addr add $NEWIP/24 brd + dev enp0s1" 2>/dev/null
+    ssh nixos@"$NEWIP" -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" "sudo ip addr del $CURRIP/24 dev enp0s1" 2>/dev/null
 }
 
 main "$@"
