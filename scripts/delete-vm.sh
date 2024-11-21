@@ -19,10 +19,12 @@ fi
 cd "$(git rev-parse --show-toplevel)"
 
 main() {
-    utmctl stop "$1"
+    if [[ $(utmctl status "$1") != "stopped" ]]; then
+        utmctl stop "$1"
+    fi
 
-    until ! utmctl status "$1" | grep 'started'; do
-        echo "Waiting for machine ${1} to be stopped."
+    until [[ $(utmctl status "$1") = "stopped" ]]; do
+        echo "Waiting for machine ${1} to be stopped..."
         sleep 5
     done
 
