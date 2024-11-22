@@ -57,6 +57,7 @@
             diskSize = "16384";
           };
         };
+      };
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         devShells.default = pkgs.mkShell {
