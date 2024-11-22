@@ -88,6 +88,10 @@ END
 
     if [[ "$RECONFIGURE" = "quick" ]]; then
         ./scripts/reconfigure-ip.sh "$NAME"
+        # if [[ "$RECONFIGURE" = "slow" ]]; then
+        #     NEWIP=$(utmctl ip-address "$NAME" 2>/dev/null | grep -q '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')
+        #     nixos-rebuild switch --flake .#"$NAME" --target-host nixos@"$NEWIP" --build-host nixos@"$NEWIP" --fast --use-remote-sudo
+        # fi
     fi
 
     utmctl ip-address "$NAME" 2>/dev/null | grep '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'
