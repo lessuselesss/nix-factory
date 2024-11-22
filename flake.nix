@@ -22,7 +22,7 @@
         nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/postgresql.nix
+            ./configurations/postgres/postgresql.nix
             self.nixosModules.vm
           ];
           specialArgs = {
@@ -32,10 +32,10 @@
           };
         };
 
-        nixosConfigurations.master = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.pg_master = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/master.nix
+            ./configurations/postgres/master.nix
             self.nixosModules.vm
           ];
           specialArgs = {
@@ -45,10 +45,10 @@
           };
         };
 
-        nixosConfigurations.slave = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.pg_slave = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/slave.nix
+            ./configurations/postgres/slave.nix
             self.nixosModules.vm
           ];
           specialArgs = {
