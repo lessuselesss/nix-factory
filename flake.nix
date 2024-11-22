@@ -32,22 +32,31 @@
           };
         };
 
-        # REMOTE CONFIGS
-        nixosConfigurations.pg1 = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
+        nixosConfigurations.master = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/postgresql.nix
-            ./configurations/hardware-configuration.nix
-            ./configurations/pg1.nix
+            ./configurations/master.nix
+            self.nixosModules.vm
           ];
           specialArgs = {
             inherit inputs;
-            hostName = "pg1";
+            hostName = "master";
+            diskSize = "16384";
           };
         };
 
-      };
+        nixosConfigurations.slave = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./configurations/base.nix
+            ./configurations/slave.nix
+            self.nixosModules.vm
+          ];
+          specialArgs = {
+            inherit inputs;
+            hostName = "slave";
+            diskSize = "16384";
+          };
+        };
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         devShells.default = pkgs.mkShell {
