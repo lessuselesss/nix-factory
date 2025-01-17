@@ -68,6 +68,18 @@
             diskSize = "16384";
           };
         };
+
+        nixosConfigurations.raspberry_master = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./configurations/base.nix
+            ./configurations/raspberry/master.nix
+            self.nixosModules.generators
+          ];
+          specialArgs = {
+            inherit inputs;
+            hostName = "master";
+          };
+        };
       };
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
