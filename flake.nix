@@ -5,13 +5,18 @@
       flake = {
 
         # VMs
-        nixosModules.vm = { config, ... }: {
+        nixosModules.generators = { config, ... }: {
           imports = [ nixos-generators.nixosModules.all-formats ];
           nixpkgs.hostPlatform = "aarch64-linux";
         };
 
         nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-          modules = [ ./configurations/base.nix self.nixosModules.vm ];
+          modules = [
+            ./configurations/base.nix
+            ./configurations/boot.nix
+            ./configurations/disks.nix
+            self.nixosModules.generators
+          ];
           specialArgs = {
             inherit inputs;
             hostName = "nixos";
@@ -22,8 +27,10 @@
         nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
+            ./configurations/boot.nix
+            ./configurations/disks.nix
             ./configurations/postgres/postgresql.nix
-            self.nixosModules.vm
+            self.nixosModules.generators
           ];
           specialArgs = {
             inherit inputs;
@@ -35,8 +42,10 @@
         nixosConfigurations.pg_master = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
+            ./configurations/boot.nix
+            ./configurations/disks.nix
             ./configurations/postgres/master.nix
-            self.nixosModules.vm
+            self.nixosModules.generators
           ];
           specialArgs = {
             inherit inputs;
@@ -48,8 +57,10 @@
         nixosConfigurations.pg_slave = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
+            ./configurations/boot.nix
+            ./configurations/disks.nix
             ./configurations/postgres/slave.nix
-            self.nixosModules.vm
+            self.nixosModules.generators
           ];
           specialArgs = {
             inherit inputs;
