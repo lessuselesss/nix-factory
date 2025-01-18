@@ -1,6 +1,8 @@
 { config, ... }:
 
 {
+  boot.supportedFilesystems = [ "nfs" ];
+
   networking.interfaces.end0.ipv4.addresses = [{
     address = "192.168.1.65";
     prefixLength = 24;
