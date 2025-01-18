@@ -4,7 +4,6 @@
       systems = [ "x86_64-linux" "aarch64-darwin" ];
       imports = [
         ./configurations/postgres/flake.nix
-        ./configurations/k3s-raspberrypi/flake.nix
       ];
       flake = {
         nixosModules.generators = { config, ... }: {
@@ -17,10 +16,6 @@
         };
 
         nixosModules.qemu = { ... }: { imports = [ ./common/qemu.nix ]; };
-
-        nixosModules.raspberrypi-rebuild = { lib, modulesPath, ... }: {
-          imports = [ ./common/raspberrypi-rebuild.nix ];
-        };
 
         nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
           modules = [
