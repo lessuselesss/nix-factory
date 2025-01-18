@@ -1,8 +1,8 @@
-#+TITLE: Nix-Factory: CLI-based Management of NixOS VMs for UTM.app
+#+TITLE: Nix-Factory: CLI-based Management of NixOS VMs for UTM.app and more
 #+DESCRIPTION: A repository for building and managing NixOS virtual machine images using nix flakes.
 
 * Overview
-Nix-Factory is a Nix-based project for building and running NixOS virtual machines. It leverages ~nixos-generators~ to produce QEMU-compatible images, primarily for use with UTM.app on macOS.
+Nix-Factory is a Nix-based project for building and running NixOS virtual machines and more. It leverages ~nixos-generators~ to produce QEMU-compatible images, primarily for use with UTM.app on macOS. Structure can also be used to build more things, like sd-aarch64 images, or rebuilding live systems.
 
 * Why
 I am not happy with any solution for managing Virtual Machines on MacOS. Most of existing tools either focus on GUI, have limited scripting/CLI capabilities or are just weird gimmicks that use custom image format, without NixOS support.
@@ -41,10 +41,32 @@ Remove all UTM machines, built images, and unused Nix store references. Then run
 ./scripts/cleanup.sh
 #+END_SRC
 
+** Build sd-aarch64 image
+Build image based on nixosConfiguration in flake.nix.
+#+begin_src bash
+./scripts/build-sd-aarch64.sh <MACHINE>
+#+end_src
+- ~<MACHINE>~ :: Name of the nixosConfiguration (see flake.nix).
+
+** Rebuild a live system
+This rebuilds a live system with ~nixos-rebuild~ command remotely. Note that if the image is freshly built and deployed, first run of this will take some time, due to nix having to rebuild entire system, including nix store (looking for a way to avoid this long wait). Subsequent runs are fast.
+#+begin_src bash
+./scripts/rebuild-host.sh <MACHINE> <IP>
+#+end_src
+- ~<NAME>~ :: Name of the nixosConfiguration (see flake.nix).
+- ~<IP>~ :: IP address of remote host.
+
 * Structure
 - ~flake.nix~ :: Defines the configurations and flake outputs.
-- ~configurations/~ :: Contains ~base.nix~ configuration for all machines, as well as additional specialized configurations.
+- ~common/~ :: Contains shared configuration, used as nixosModules.
+- ~configurations/~ :: Contains specialized configurations.
 - ~scripts/~ :: Scripts used to build images and to manage virtual machines.
+
+* To do
+- [-] Update README to fully incorporate other purposes, not just QEMU/UTM
+- [ ] Standarize naming in the project (NAME, MACHINE, etc.)
+- [ ] Find a way for a rebuild not to take such a long time for the first run
+- [ ] Find a way to use same nixosConfiguration for building an image, and rebuilding live system
 
 * Credits
 - [[https://github.com/nix-community/nixos-generators][nixos-generators]]
