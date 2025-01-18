@@ -7,7 +7,6 @@
 
   security.sudo.wheelNeedsPassword = false;
   services.openssh.enable = true;
-  services.qemuGuest.enable = true;
 
   networking.hostName = specialArgs.hostName;
   networking.firewall = {

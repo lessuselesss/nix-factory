@@ -13,8 +13,7 @@
         nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/boot.nix
-            ./configurations/disks.nix
+            ./configurations/qemu.nix
             self.nixosModules.generators
           ];
           specialArgs = {
@@ -27,9 +26,8 @@
         nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/boot.nix
-            ./configurations/disks.nix
-            ./configurations/postgres/postgresql.nix
+            ./configurations/qemu.nix
+            ./configurations/postgres/postgres.nix
             self.nixosModules.generators
           ];
           specialArgs = {
@@ -42,8 +40,7 @@
         nixosConfigurations.pg_master = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/boot.nix
-            ./configurations/disks.nix
+            ./configurations/qemu.nix
             ./configurations/postgres/master.nix
             self.nixosModules.generators
           ];
@@ -57,8 +54,7 @@
         nixosConfigurations.pg_slave = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/boot.nix
-            ./configurations/disks.nix
+            ./configurations/qemu.nix
             ./configurations/postgres/slave.nix
             self.nixosModules.generators
           ];
@@ -69,11 +65,23 @@
           };
         };
 
-        nixosConfigurations.raspberry_master = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.k3s_raspberry_master_sd = nixpkgs.lib.nixosSystem {
           modules = [
             ./configurations/base.nix
-            ./configurations/raspberry/master.nix
+            ./configurations/k3s-raspberrypi/k3s-master.nix
             self.nixosModules.generators
+          ];
+          specialArgs = {
+            inherit inputs;
+            hostName = "master";
+          };
+        };
+
+        nixosConfigurations.k3s_raspberry_master = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./configurations/base.nix
+            ./configurations/k3s-raspberrypi/k3s-master.nix
+            ./configurations/raspberrypi-rebuild.nix
           ];
           specialArgs = {
             inherit inputs;
