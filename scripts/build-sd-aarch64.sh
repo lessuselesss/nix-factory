@@ -23,7 +23,7 @@ main() {
 
     mkdir -p results
     rm -fv results/"$1".img
-    cp -v result/nixos-sd-image*.img.zst results/"$1".img.zst
+    cp -v result/*.img.zst results/"$1".img.zst
     zstd -d results/"$1".img.zst
     rm -fv results/"$1".img.zst
     chmod 644 results/"$1".img
