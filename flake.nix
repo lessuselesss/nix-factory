@@ -2,27 +2,19 @@
   outputs = inputs@{ self, flake-parts, nixos-generators, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
-      imports = [
-        ./configurations/postgres/flake.nix
-      ];
+      imports = [ ./configurations/postgres/flake.nix ];
       flake = {
-        nixosModules.generators = { config, ... }: {
-          imports = [ nixos-generators.nixosModules.all-formats ];
+        nixosModules.base = { config, ... }: {
+          imports = [
+            ./common/base.nix
+            ./common/qemu.nix
+            nixos-generators.nixosModules.all-formats
+          ];
           nixpkgs.hostPlatform = "aarch64-linux";
         };
 
-        nixosModules.base = { lib, pkgs, specialArgs, ... }: {
-          imports = [ ./common/base.nix ];
-        };
-
-        nixosModules.qemu = { ... }: { imports = [ ./common/qemu.nix ]; };
-
         nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
-          modules = [
-            self.nixosModules.base
-            self.nixosModules.qemu
-            self.nixosModules.generators
-          ];
+          modules = [ self.nixosModules.base ];
           specialArgs = {
             inherit inputs;
             hostName = "nixos";

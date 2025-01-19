@@ -3,8 +3,6 @@
     nixosConfigurations.postgres = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         self.nixosModules.base
-        self.nixosModules.qemu
-        self.nixosModules.generators
         ./postgres.nix
       ];
       specialArgs = {
@@ -17,8 +15,6 @@
     nixosConfigurations.pg_master = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         self.nixosModules.base
-        self.nixosModules.qemu
-        self.nixosModules.generators
         ./master.nix
       ];
       specialArgs = {
@@ -31,8 +27,6 @@
     nixosConfigurations.pg_slave = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         self.nixosModules.base
-        self.nixosModules.qemu
-        self.nixosModules.generators
         ./slave.nix
       ];
       specialArgs = {
