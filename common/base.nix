@@ -1,4 +1,4 @@
-{ config, lib, pkgs, specialArgs, ... }:
+{ lib, pkgs, specialArgs, ... }:
 
 {
   nix.extraOptions = ''
@@ -9,6 +9,7 @@
   services.openssh.enable = true;
 
   networking.hostName = specialArgs.hostName;
+  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 ];
