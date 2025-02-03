@@ -8,7 +8,6 @@
       specialArgs = {
         inherit inputs;
         hostName = "postgres";
-        diskSize = "16384";
       };
     };
 
@@ -20,7 +19,6 @@
       specialArgs = {
         inherit inputs;
         hostName = "master";
-        diskSize = "16384";
       };
     };
 
@@ -32,7 +30,6 @@
       specialArgs = {
         inherit inputs;
         hostName = "slave";
-        diskSize = "16384";
       };
     };
   };

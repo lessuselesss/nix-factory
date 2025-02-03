@@ -18,7 +18,7 @@
           specialArgs = {
             inherit inputs;
             hostName = "nixos";
-            diskSize = "16384";
+            # diskSize = 16384;
           };
         };
       };

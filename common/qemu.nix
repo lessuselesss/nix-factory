@@ -1,10 +1,12 @@
-{ ... }:
+{ specialArgs, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   services.qemuGuest.enable = true;
+
+  virtualisation.diskSize = (specialArgs.diskSize or 16384);
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
