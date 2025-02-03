@@ -11,6 +11,8 @@ fi
 if [[ "${1-}" =~ ^-*h(elp)?$ ]] || [[ $# -eq 0 ]]; then
     echo 'Usage: ./rebuild-host.sh MACHINE [NAME]
     Rebuild host MACHINE remotely based on flake.nix configuration. If more than one machine was built from the same image, or the machine has different name, then optionally specify NAME to target the correct machine.
+
+This script can also be used to rebuild machine into completely different kind, based on MACHINE parameter.
 '
     exit
 fi

@@ -12,6 +12,10 @@ I am not happy with any solution for managing Virtual Machines on MacOS. Most of
 - Manage UTM.app VMs through simple CLI scripts, without need to use GUI at all.
 - Preconfigured NixOS user with password and SSH key preinstalled.
 
+* Naming
+- MACHINE :: flake.nix output with a name. They are unique.
+- NAME :: Unique identifier for a virtual machine. You can have multiple virtual machines, each with it's own NAME, but build from the same MACHINE.
+
 * Usage
 
 ** Build an Image
@@ -43,11 +47,13 @@ Remove all UTM machines, built images, and unused Nix store references. Then run
 
 ** Rebuild a live system
 This rebuilds a live system with ~nixos-rebuild~ command remotely. Note that if the image is freshly built and deployed, first run of this will take some time, due to nix having to rebuild entire system, including nix store (looking for a way to avoid this long wait). Subsequent runs are fast.
+
+This script can also be used to rebuild existing machine based on one flake.nix output into completely different machine, based on different flake.nix output. Sky is the limit.
 #+begin_src bash
-./scripts/rebuild-host.sh <MACHINE> <IP>
+./scripts/rebuild-host.sh <MACHINE> [<NAME>]
 #+end_src
-- ~<NAME>~ :: Name of the nixosConfiguration (see flake.nix).
-- ~<IP>~ :: IP address of remote host.
+- ~<MACHINE>~ :: Name of the nixosConfiguration (see flake.nix).
+- ~<NAME>~ (optional) :: A unique identifier for the VM instance.
 
 * Structure
 - ~flake.nix~ :: Defines the configurations and flake outputs.
@@ -56,9 +62,8 @@ This rebuilds a live system with ~nixos-rebuild~ command remotely. Note that if 
 - ~scripts/~ :: Scripts used to build images and to manage virtual machines.
 
 * To do
-- [ ] Standarize naming in the project (NAME, MACHINE, etc.)
-- [ ] Find a way for a rebuild not to take such a long time for the first run
-- [ ] Find a way to use same nixosConfiguration for building an image, and rebuilding live system
+- [X] Standarize naming in the project (NAME, MACHINE, etc.)
+- [X] Find a way to use same nixosConfiguration for building an image, and rebuilding live system
 
 * Credits
 - [[https://github.com/nix-community/nixos-generators][nixos-generators]]
