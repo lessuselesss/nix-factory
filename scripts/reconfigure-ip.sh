@@ -10,6 +10,7 @@ fi
 
 if [[ "${1-}" =~ ^-*h(elp)?$ ]] || [[ $# -eq 0 ]]; then
     echo 'Usage: ./reconfigure-ip.sh NAME
+This script is only for hosts that do not have set IP address in Nix modules, and get their IPs from utm DHCP.
 
 Temporarily reconfigure IP address on main network interface (enp0s1). These changes will NOT survive reboot.
 
