@@ -1,5 +1,5 @@
 {
-  outputs = inputs@{ self, flake-parts, nixos-generators, ... }:
+  outputs = inputs@{ self, flake-parts, nixos-generators, rebuild, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
       imports = [ ./configurations/postgres/flake.nix ];
@@ -8,7 +8,7 @@
           imports = [
             ./common/base.nix
             ./common/qemu.nix
-            nixos-generators.nixosModules.all-formats
+            (if rebuild.value then null else nixos-generators.nixosModules.all-formats)
           ];
           nixpkgs.hostPlatform = "aarch64-linux";
         };
@@ -37,6 +37,8 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    rebuild.url = "github:boolean-option/true";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
