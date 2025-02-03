@@ -8,7 +8,7 @@
           imports = [
             ./common/base.nix
             ./common/qemu.nix
-            (if rebuild.value then null else nixos-generators.nixosModules.all-formats)
+            (if rebuild.value then {} else nixos-generators.nixosModules.all-formats)
           ];
           nixpkgs.hostPlatform = "aarch64-linux";
         };
