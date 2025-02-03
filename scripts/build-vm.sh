@@ -8,7 +8,7 @@ if [[ "${TRACE-0}" == "1" ]]; then
 fi
 
 if [[ "${1-}" =~ ^-*h(elp)?$ ]] || [[ $# -eq 0 ]]; then
-    echo 'Usage: ./build-iso.sh MACHINE
+    echo 'Usage: ./build-vm.sh MACHINE
 
 Build raw-efi image based on MACHINE (see flake.nix)
 
