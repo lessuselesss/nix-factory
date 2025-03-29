@@ -19,7 +19,7 @@ fi
 cd "$(git rev-parse --show-toplevel)"
 
 main() {
-    nix build .#nixosConfigurations."$1".config.formats.iso --override-input rebuild github:boolean-option/false
+    nix build .#darwinConfigurations."$1".config.formats.iso --override-input rebuild github:boolean-option/false
 
     rm -fv results/"$1".iso
     cp -v result results/"$1".iso
