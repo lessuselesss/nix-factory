@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
   flake = {
-    nixosConfigurations.postgres = inputs.nixpkgs.lib.nixosSystem {
+    darwinConfigurations.postgres = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         self.nixosModules.base
         ./postgres.nix
@@ -11,7 +11,7 @@
       };
     };
 
-    nixosConfigurations.pg_master = inputs.nixpkgs.lib.nixosSystem {
+    darwinConfigurations.pg_master = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         self.nixosModules.base
         ./master.nix
@@ -22,7 +22,7 @@
       };
     };
 
-    nixosConfigurations.pg_slave = inputs.nixpkgs.lib.nixosSystem {
+    darwinConfigurations.pg_slave = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         self.nixosModules.base
         ./slave.nix
