@@ -19,7 +19,7 @@ fi
 cd "$(git rev-parse --show-toplevel)"
 
 main() {
-    nix build .#nixosConfigurations."$1".config.formats.qcow --override-input rebuild github:boolean-option/false
+    nix build .#darwinConfigurations."$1".config.formats.qcow --override-input rebuild github:boolean-option/false
 
     mkdir -p results
     rm -fv results/"$1".qcow2
